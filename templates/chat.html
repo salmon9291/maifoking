@@ -8,12 +8,8 @@
 </head>
 <body>
     <h1>Chat</h1>
-    <div id="chat-box">
-        {% for message in messages %}
-            <p><strong>{{ message.user.username }}:</strong> {{ message.content }}</p>
-        {% endfor %}
-    </div>
-    <form action="{{ url_for('send_message') }}" method="post">
+    <div id="chat-box"></div>
+    <form id="chat-form" action="{{ url_for('send_message') }}" method="post">
         <input type="text" id="message" name="message" required>
         <button type="submit">Enviar</button>
     </form>
