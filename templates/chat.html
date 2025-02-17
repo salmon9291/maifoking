@@ -10,7 +10,7 @@
     <h1>Chat</h1>
     <div id="chat-box">
         {% for message in messages %}
-            <p><strong>{{ message.username }}:</strong> {{ message.message }}</p>
+            <p><strong>{{ message.user.username }}:</strong> {{ message.content }}</p>
         {% endfor %}
     </div>
     <form action="{{ url_for('send_message') }}" method="post">

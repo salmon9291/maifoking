@@ -1,15 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from dotenv import load_dotenv
 import os
+from models import db, User, Message
 
 # Cargar variables de entorno desde el archivo .env
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Lista para almacenar mensajes de chat
-messages = []
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 @app.route('/')
 def index():
@@ -18,12 +23,18 @@ def index():
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        user = User(username=username)
+        db.session.add(user)
+        db.session.commit()
     session['username'] = username
     return redirect(url_for('chat'))
 
 @app.route('/chat')
 def chat():
     if 'username' in session:
+        messages = Message.query.all()
         return render_template('chat.html', username=session['username'], messages=messages)
     return redirect(url_for('index'))
 
@@ -31,8 +42,11 @@ def chat():
 def send_message():
     if 'username' in session:
         username = session['username']
-        message = request.form['message']
-        messages.append({'username': username, 'message': message})
+        message_content = request.form['message']
+        user = User.query.filter_by(username=username).first()
+        message = Message(content=message_content, user=user)
+        db.session.add(message)
+        db.session.commit()
     return redirect(url_for('chat'))
 
 @app.route('/logout')
