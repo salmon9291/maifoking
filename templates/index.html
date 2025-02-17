@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Chat</title>
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <h1>Login</h1>
-    <form action="{{ url_for('login') }}" method="post">
-        <label for="username">Nombre de usuario:</label>
-        <input type="text" id="username" name="username" required>
-        <button type="submit">Login</button>
-    </form>
+    <div class="container">
+        <h1>Chat</h1>
+        <div id="chat-box" class="chat-box"></div>
+        <form id="chat-form" action="{{ url_for('send_message') }}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="text" id="message" name="message" placeholder="Escribe tu mensaje...">
+                <input type="file" id="file" name="file">
+                <button type="submit" class="btn">Enviar</button>
+            </div>
+        </form>
+        <a href="{{ url_for('logout') }}" class="btn btn-logout">Cerrar Sesión</a>
+    </div>
+    <script src="/static/scripts.js"></script>
 </body>
 </html>

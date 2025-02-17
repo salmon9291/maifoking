@@ -1,4 +1,5 @@
-.env
-__pycache__/
-instance/
-site.db
+Flask
+Flask-SQLAlchemy
+Flask-Bcrypt
+python-dotenv
+gunicorn
