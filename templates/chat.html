@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Chat</h1>
+    <div id="chat-box">
+        {% for message in messages %}
+            <p><strong>{{ message.username }}:</strong> {{ message.message }}</p>
+        {% endfor %}
+    </div>
+    <form action="{{ url_for('send_message') }}" method="post">
+        <input type="text" id="message" name="message" required>
+        <button type="submit">Enviar</button>
+    </form>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <script src="/static/scripts.js"></script>
+</body>
+</html>
