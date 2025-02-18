@@ -1,0 +1,21 @@
+name: Keep Codespace Alive
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Ejecutar cada 15 minutos
+  workflow_dispatch:  # Permitir ejecución manual
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Perform a no-op Git commit to keep Codespace alive
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git commit --allow-empty -m "Keep Codespace alive at $(date)" || echo "No changes to commit"
+        git push || echo "Nothing to push"
